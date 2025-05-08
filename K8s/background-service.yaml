@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: background-check
+spec:
+  selector:
+    matchLabels:
+      name: background-check
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: background-check
+    spec:
+      containers:
+        - name: background-check
+          image: mukundbabbar/java-apps:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: background-check
+spec:
+  selector:
+    name: background-check
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+status:
+  loadBalancer: {}
