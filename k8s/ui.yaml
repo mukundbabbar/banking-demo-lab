@@ -14,9 +14,12 @@ spec:
     spec:
       containers:
       - name: loan-frontend
-        image: megazina/loan-frontend:latest
+        image: mukundbabbar/securebank:latest
         ports:
         - containerPort: 81
+        envFrom:
+          - configMapRef:
+              name: appd-config
 ---
 apiVersion: v1
 kind: Service
