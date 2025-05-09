@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: address-check
+spec:
+  selector:
+    matchLabels:
+      name: address-check
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: address-check
+    spec:
+      containers:
+        - name: address-check
+          image: mukundbabbar/java-apps:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 8080
+          env:
+            - name: APPDYNAMICS_AGENT_TIER_NAME
+              value: "AddressCheck"
+            - name: APPDYNAMICS_AGENT_NODE_NAME
+              value: "ACNode"
+            - name: APPDYNAMICS_CONTROLLER_PORT
+              value: "443"
+            - name: APPDYNAMICS_CONTROLLER_SSL_ENABLED
+              value: "true"
+            - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME
+              value: "true"
+            - name: APPDYNAMICS_JAVA_AGENT_REUSE_NODE_NAME_PREFIX
+              value: "node"
+            - name: JAVA_TOOL_OPTIONS
+              value: '-javaagent:/opt/appdynamics/javaagent.jar -Dappdynamics.socket.collection.bci.enable=false -Dappdynamics.argento.enabled=false'
+          volumeMounts:
+          - mountPath: /opt/appdynamics/
+            name: appd-agent-repo
+      initContainers:
+      - command:
+        - cp
+        - -r
+        - /opt/appdynamics/.
+        - /opt/temp
+        name: appd-agent
+        image: docker.io/appdynamics/java-agent:latest
+        volumeMounts:
+        - mountPath: /opt/temp
+          name: appd-agent-repo
+      volumes:
+      - emptyDir: {}
+        name: appd-agent-repo
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: address-check
+spec:
+  selector:
+    name: address-check
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+status:
+  loadBalancer: {}
