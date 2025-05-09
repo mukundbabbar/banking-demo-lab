@@ -26,4 +26,8 @@ kubectl create secret generic appd-secret \
   --from-literal=APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY="$APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY" \
   --dry-run=client -o yaml | kubectl apply -f -
 
+# 5. Deploy Apps
+echo "Deploying apps..."
+kubectl apply -f k8s
+
 echo "✅ ConfigMap and Secret successfully created."
