@@ -5,7 +5,7 @@ set -e
 
 # 1. Get EC2 instance metadata for public hostname
 INSTANCE=$(cat /var/lib/cloud/data/instance-id)
-ENDPOINT_URL=http://conf-$INSTANCE:81
+ENDPOINT_URL=http://mbtest-$INSTANCE.splunk.show:81
 echo "Endpoint URL: $ENDPOINT_URL"
 
 # 2. Get required environment variables
