@@ -21,7 +21,9 @@ spec:
             args:
               - -c
               - >-
+                  appId=$(( RANDOM % 10000 ));
                   curl http://web-frontend:8080 &&
                   curl http://web-frontend:8080/WebFrontEnd &&
+                  curl "http://web-frontend:8080/WebFrontEnd/pgp?appId=$appId" &&
                   curl http://web-frontend:8080/WebFrontEnd/jg
           restartPolicy: OnFailure
