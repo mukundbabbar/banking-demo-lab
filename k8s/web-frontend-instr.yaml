@@ -19,6 +19,11 @@ spec:
           ports:
           - containerPort: 8080
             name: app-port
+          envFrom:
+            - configMapRef:
+                name: appd-config
+            - secretRef:
+                name: appd-secret
           env:
             - name: APPDYNAMICS_AGENT_TIER_NAME
               value: "Web"

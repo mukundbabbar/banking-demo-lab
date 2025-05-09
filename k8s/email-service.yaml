@@ -18,6 +18,11 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: appd-config
+            - secretRef:
+                name: appd-secret
           env:
             - name: APPDYNAMICS_AGENT_TIER_NAME
               value: "Email"
