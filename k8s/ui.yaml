@@ -15,6 +15,12 @@ spec:
       containers:
       - name: loan-frontend
         image: mukundbabbar/securebank:latest
+        env:
+          - name: APPD_JS_SNIPPET
+            valueFrom:
+              secretKeyRef:
+                name: appd-snippet
+                key: js
         ports:
         - containerPort: 81
         envFrom:
