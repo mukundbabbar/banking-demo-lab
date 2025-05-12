@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: loan-frontend
-        image: mukundbabbar/securebank:latest
+        image: mukundbabbar/banking-demo-ui:latest
         env:
           - name: APPD_JS_SNIPPET
             valueFrom:
@@ -25,7 +25,15 @@ spec:
         - containerPort: 81
         envFrom:
           - configMapRef:
-              name: appd-config
+              name: app
+        volumeMounts:
+          - name: appd-snippet
+            mountPath: /app/config/snippet.js
+            subPath: snippet.js
+        volumes:
+          - name: appd-snippet
+            secret:
+              secretName: appd-snippetd-config
 ---
 apiVersion: v1
 kind: Service

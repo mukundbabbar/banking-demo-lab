@@ -9,23 +9,18 @@ ENDPOINT_URL=http://mbtest-$INSTANCE.splunk.show:81
 echo "Endpoint URL: $ENDPOINT_URL"
 
 # 2. Get required environment variables
+set -a  # Auto-export all variables
 source env.conf
+set +a  # Stop auto-exporting
 
 # Construct RUM Snippet
-APPD_JS_SNIPPET="<script charset=\"UTF-8\" type=\"text/javascript\">
-window['adrum-start-time'] = new Date().getTime();
-(function(config){
-    config.appKey = '${APPDYNAMICS_RUM_APP_KEY}';
-    config.adrumExtUrlHttp = 'http://cdn.appdynamics.com';
-    config.adrumExtUrlHttps = 'https://cdn.appdynamics.com';
-    config.beaconUrlHttp = 'http://${APPDYNAMICS_RUM_BEACON_URL}';
-    config.beaconUrlHttps = 'https://${APPDYNAMICS_RUM_BEACON_URL}';
-    config.useHTTPSAlways = true;
-    config.resTiming = {\"bufSize\":200,\"clearResTimingOnBeaconSend\":true};
-    config.maxUrlLength = 512;
-})(window['adrum-config'] || (window['adrum-config'] = {}));
-</script>
-<script src=\"//cdn.appdynamics.com/adrum/adrum-${APPDYNAMICS_RUM_JS_VERSION}.js\"></script>"
+# Render snippet with env values
+envsubst < snippet.tpl > rendered_snippet.js
+
+# Create secret with final snippet
+kubectl create secret generic appd-snippet \
+  --from-file=snippet.js=rendered_snippet.js \
+  --dry-run=client -o yaml | kubectl apply -f -
 
 # 3. Create ConfigMap
 echo "Creating ConfigMap..."
