@@ -17,6 +17,7 @@ set +a  # Stop auto-exporting
 # Render snippet with env values
 envsubst < snippet.tpl > rendered_snippet.js
 
+
 # Create secret with final snippet
 kubectl create secret generic appd-snippet \
   --from-file=snippet.js=rendered_snippet.js \
@@ -38,10 +39,10 @@ kubectl create secret generic appd-secret \
   --dry-run=client -o yaml | kubectl apply -f -
 
 # Create appd-snippet secret from the JS env var
-echo "Creating AppDynamics RUM Secret..."
-kubectl create secret generic appd-snippet \
-  --from-literal=js="$APPD_JS_SNIPPET" \
-  --dry-run=client -o yaml | kubectl apply -f -
+#echo "Creating AppDynamics RUM Secret..."
+#kubectl create secret generic appd-snippet \
+#  --from-literal=js="$APPD_JS_SNIPPET" \
+#  --dry-run=client -o yaml | kubectl apply -f -
 
 # 5. Deploy Apps
 echo "Deploying apps..."

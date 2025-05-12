@@ -13,27 +13,27 @@ spec:
         app: loan-frontend
     spec:
       containers:
-      - name: loan-frontend
-        image: mukundbabbar/banking-demo-ui:latest
-        env:
-          - name: APPD_JS_SNIPPET
-            valueFrom:
-              secretKeyRef:
-                name: appd-snippet
-                key: js
-        ports:
-        - containerPort: 81
-        envFrom:
-          - configMapRef:
-              name: app
-        volumeMounts:
-          - name: appd-snippet
-            mountPath: /app/config/snippet.js
-            subPath: snippet.js
-        volumes:
-          - name: appd-snippet
-            secret:
-              secretName: appd-snippetd-config
+        - name: loan-frontend
+          image: mukundbabbar/banking-demo-ui:latest
+          ports:
+            - containerPort: 81
+          envFrom:
+            - configMapRef:
+                name: appd-config
+          env:
+            - name: APPD_JS_SNIPPET
+              valueFrom:
+                secretKeyRef:
+                  name: appd-snippet
+                  key: snippet.js
+          volumeMounts:
+            - name: appd-snippet-volume
+              mountPath: /app/config/snippet.js
+              subPath: snippet.js
+      volumes:
+        - name: appd-snippet-volume
+          secret:
+            secretName: appd-snippet
 ---
 apiVersion: v1
 kind: Service
@@ -46,3 +46,4 @@ spec:
     - protocol: TCP
       port: 81
       targetPort: 81
+
