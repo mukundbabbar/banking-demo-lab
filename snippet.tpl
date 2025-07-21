@@ -34,6 +34,7 @@
         config.adrumExtUrlHttps = "https://cdn.appdynamics.com";
         config.beaconUrlHttp = "http://${APPDYNAMICS_RUM_BEACON_URL}";
         config.beaconUrlHttps = "https://${APPDYNAMICS_RUM_BEACON_URL}";
+        config.useHTTPSAlways = true;
         config.resTiming = {
             bufSize: 200,
             clearResTimingOnBeaconSend: true
