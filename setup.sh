@@ -3,12 +3,19 @@
 # Exit on error
 set -e
 
-prefix="${INSTANCE%%-*}"
-echo "$prefix"
+# for the Show instances with 'prefix', i.e. http://prefix-i-3423423232.splunk.show, use below
+## prefix="${INSTANCE%%-*}"
+## echo "$prefix"
 
 # 1. Get EC2 instance metadata for public hostname
-INSTANCE=$(cat /var/lib/cloud/data/instance-id)
-ENDPOINT_URL=http://$prefix-$INSTANCE.splunk.show:81
+
+# for the Show instances with 'prefix':
+## INSTANCE=$(cat /var/lib/cloud/data/instance-id)
+## ENDPOINT_URL=http://$prefix-$INSTANCE.splunk.show:81
+
+## for the Show instance without 'prefix':
+INSTANCE=$(hostname | grep -o 'i-[0-9a-fA-F]\+')
+ENDPOINT_URL=http://$INSTANCE.splunk.show:81
 echo "Endpoint URL: $ENDPOINT_URL"
 
 # 2. Get required environment variables
