@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: loan-frontend
-          image: mukundbabbar/banking-demo-ui:latest
+          image: mukundbabbar/banking-demo-ui:20250514043244-21903
           ports:
             - containerPort: 81
           envFrom:
