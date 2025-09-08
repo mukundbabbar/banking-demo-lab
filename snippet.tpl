@@ -16,11 +16,14 @@
             console.log("CALL DETECTED");
             const parsedUrl = new URL(context.url);
             const appId = parsedUrl.searchParams.get("appId");
+            const amount = parsedUrl.searchParams.get("loanAmount");
             console.log(appId);
+            console.log(amount);
 
             return {
                 userData: {
                     appId: appId,
+                    loanAmount: amount,
                     amt: 1000
                 }
             };
